@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 5367781209188484634}
   - component: {fileID: 6314073653503284938}
   - component: {fileID: -7761522359822815995}
-  m_Layer: 0
+  - component: {fileID: 5049803519958501480}
+  m_Layer: 8
   m_Name: Board
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4932754188935206096}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
   m_LocalPosition: {x: -0, y: -0.000000029802322, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
 --- !u!33 &5367781209188484634
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -96,3 +97,16 @@ MonoBehaviour:
     type: 3}
   blackPiecePrefab: {fileID: 4983129485602379589, guid: ced8694405d84404caa9aa6fcfb269ae,
     type: 3}
+--- !u!65 &5049803519958501480
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4932754188935206096}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.08, y: 0.08, z: 0.001}
+  m_Center: {x: 0.0000000037252903, y: 0, z: -0.0004999997}
