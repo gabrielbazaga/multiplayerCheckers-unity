@@ -16,7 +16,9 @@ public class CheckersBoard : MonoBehaviour
 
     private Vector2 mouseOver;
     private Vector2 startDrag;
-    private Vector3 endDrag;
+    private Vector2 endDrag;
+
+    private int maxBoardSquare = 8;
 
     private void Start()
     {
@@ -25,8 +27,9 @@ public class CheckersBoard : MonoBehaviour
 
     private void Update()
     {
-        UpdateMouseOver();
 
+        if (selectedPiece != null)
+            UpdatePieceDrag(selectedPiece);
         // if it is my turn
         {
             if (Input.GetMouseButtonDown(0))
@@ -39,6 +42,11 @@ public class CheckersBoard : MonoBehaviour
 
     private void UpdateMouseOver()
     {
+
+    }
+
+    private void UpdatePieceDrag(Piece p)
+    {
         if (!Camera.main)
         {
             Debug.Log("Unable to find main camera");
@@ -48,19 +56,15 @@ public class CheckersBoard : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 25.0f, LayerMask.GetMask("Board")))
         {
-            mouseOver.x = (int)(hit.point.x - boardOffset.x);
-            mouseOver.y = (int)(hit.point.z - boardOffset.z);
-        } else
-        {
-            mouseOver.x = -1;
-            mouseOver.y = -1;
+            p.transform.position = hit.point + Vector3.up;
         }
+
     }
 
     private void SelectPiece(int x, int y)
     {
         //out of bounds
-        if(x < 0 || x >= pieces.Length || y < 0 || y >= pieces.Length)
+        if(x < 0 || x >= maxBoardSquare || y < 0 || y >= maxBoardSquare)
         {
             return;
         }
@@ -81,7 +85,56 @@ public class CheckersBoard : MonoBehaviour
         endDrag = new Vector2(x2, y2);
         selectedPiece = pieces[x1, y1];
 
-        MovePiece(selectedPiece, x2, y2);
+
+        // out of bounds
+        if(x2 < 0 || x2 >= maxBoardSquare || y2 < 0 || y2 >= maxBoardSquare)
+        {
+            if (selectedPiece != null)
+                MovePiece(selectedPiece, x1, y1);
+
+            startDrag = Vector2.zero;
+            selectedPiece = null;
+            return;
+        }
+
+        if(selectedPiece != null)
+        {
+            // if it has not moved
+            if(endDrag == startDrag)
+            {
+                MovePiece(selectedPiece, x1, y1);
+                startDrag = Vector2.zero;
+                selectedPiece = null;
+                return;
+            }
+
+            // check if its a valid move
+            if(selectedPiece.ValidMove(pieces, x1, y1,x2,y2))
+            {
+                //did we kill anything
+                //if this is a jump
+                if(Mathf.Abs(x2-x2) == 2)
+                {
+                    Piece p = pieces[(x1 + x2) / 2, (y1 - y2) / 2];
+                    if(p != null)
+                    {
+                        pieces[(x1 + x2) / 2, (y1 - y2) / 2] = null;
+                        Destroy(p);
+                    }
+                }
+
+                pieces[x2, y2] = selectedPiece;
+                pieces[x1, y1] = null;
+
+                MovePiece(selectedPiece, x2, y2);
+                EndTurn();
+            }
+        }
+    }
+
+    private void EndTurn()
+    {
+
     }
 
     private void GenerateBoard()
