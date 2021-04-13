@@ -1,2 +1,2 @@
 # multiplayerCheckers-unity
-A multiplayer checher
+A multiplayer checker game made in C# and Unity. This repository is for improve my programming skills
